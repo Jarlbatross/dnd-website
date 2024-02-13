@@ -1,7 +1,11 @@
 <template>
   <nav>
     <router-link to="/">Home</router-link> |
-    <router-link to="/about">About</router-link>
+    <router-link to="/log">Session Logs</router-link> |
+    <router-link to="/rules">Rules</router-link> |
+    <router-link to="/monsters">Monsters</router-link> |
+    <router-link to="/spells">Spells</router-link> |
+    <router-link to="/npc">NPCs</router-link>
   </nav>
   <router-view/>
 </template>
