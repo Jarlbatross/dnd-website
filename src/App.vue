@@ -18,7 +18,9 @@
   text-align: center;
   color: #2c3e50;
 }
-
+body {
+  background-color: rgb(236, 230, 230);
+}
 nav {
   padding: 30px;
 }
@@ -49,7 +51,7 @@ h1 {
 }
 
 #monsterInput {
-  width: 100%;
+  width: 40%;
   padding: 8px;
   margin-bottom: 10px;
   border: 1px solid #ccc;
@@ -66,7 +68,9 @@ h1 {
 }
 
 .monster-result {
+  width: 45%;
   margin-top: 20px;
+  margin-left: 27%;
   padding: 10px;
   border: 1px solid #ccc;
   border-radius: 4px;
