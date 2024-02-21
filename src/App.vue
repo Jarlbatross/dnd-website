@@ -5,7 +5,8 @@
     <router-link to="/rules">Rules</router-link> |
     <router-link to="/monsters">Bestiary</router-link> |
     <router-link to="/spells">Spells</router-link> |
-    <router-link to="/npc">NPCs</router-link>
+    <router-link to="/npc">NPCs</router-link> |
+    <router-link to="/pc">PCs</router-link>
   </nav>
   <router-view/>
 </template>

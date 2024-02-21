@@ -1,11 +1,16 @@
 <template>
-    <h1>{{monsterResult}}</h1>
-    <input type="text" id="monsterInput" placeholder="Enter a monster name" v-model="monsterInput"/>
+    <h1>{{monsterOutput.name}}</h1>
+    <input type="text" id="monsterInput" placeholder="Skriv inn monsteret du vil se" v-model="monsterInput"/>
     <button id="searchButton" @click="SearchMonster">Search</button>
-    <div v-if="monster">
-        <div id="monsterResult" class="monster-result">{{monster.name}} {{ monster.alignment }}</div>
+    
+    <div v-if="monsterInput">
+        <div id="monsterResult" class="monster-result">
+            <p>Navn: {{ monsterOutput.name }}</p> 
+            <p>Alignment: {{ monsterOutput.alignment }}</p>
+            <p>Beskrivelse: {{ monsterOutput.desc }}</p>
+        </div>
     </div>
-    <div v-else><div id="monsterResult" class="monster-result">results</div></div>
+    <div v-else><div id="monsterResult" class="monster-result">Vi venter i spenning på søket ditt</div></div>
 </template>
 
 <script>
@@ -16,48 +21,31 @@ export default {
     data() {
         return {
             monsterInput: '',
-            monsterResult: ''
+            monsterOutput: ''
         };
     },
     methods: {
-        SearchMonster() {
-            const monsterName = this.monsterInput.toLowerCase();
+        DisplayMonsters() {
+            const index = this.monsterInput.toLowerCase();
+            const url = `https://www.dnd5eapi.co/api/monsters/${index}`;
 
-            if (monsterName) {
-                this.monsterResult = 'Leter etter monster...';
-                this.FetchMonsters(monsterName);
-            } else {
-                this.monsterResult = 'Fant ikke monsteret, prøv igjen.';
-            }
-        },
-        FetchMonsters(monsterName) {
-            axios
-                .get('https://www.dnd5eapi.co/api/monsters')
-                .then((response) => {
-                    const monsters = response.data.results;
-                    const matchedMonster = monsters.find(
-                        (monster) => monster.name.toLowerCase() === monsterName
-                    );
-                    if (matchedMonster) {
-                        this.FetchMonsterDetails(matchedMonster.url);
-                    } else {
-                        this.monsterResult = 'Fant ikke monsteret, prøv igjen.';
-                    }
-                })
-                .catch((error) => {
-                    this.monsterResult = 'Det skjedde en feil under leting etter monstre.';
-                });
-        },
-        FetchMonsterDetails(url) {
             axios
                 .get(url)
                 .then((response) => {
-                    const monsterData = response.data;
-                    this.monsterResult = '';
+                    this.monsterOutput = response.data
                 })
-                .catch((error) => {
-                    this.monsterResult = 'Det skjedde en feil.';
-                });
+                .catch(error => {
+                    this.monsterOutput = 'Fant ikke monsteret du spurte etter, prøv igjen.'
+                } ) 
+         },
+
+        SearchMonster() {
+
+            if (this.monsterInput) {
+                this.DisplayMonsters()
+            } else {
+                this.monsterResult = 'Det skjedde en feil.';
+            }
         },
     },
 }
