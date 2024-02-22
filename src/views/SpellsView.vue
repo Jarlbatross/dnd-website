@@ -1,6 +1,6 @@
 <template>
   <h1>{{spellOutput.name}}</h1>
-  <input type="text" id="spellInput" placeholder="Skriv inn spellet du vil se" v-model="spellInput"/>
+  <input type="text" id="monsterInput" placeholder="Skriv inn spellet du vil se" v-model="spellInput"/>
   <button id="searchButton" @click="SearchSpellList">Search</button>
   
   <div v-if="spellInput">
