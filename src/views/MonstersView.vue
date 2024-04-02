@@ -21,23 +21,13 @@
 <script>
 import axios from 'axios'
 
-axios.get('http://localhost:3000/api/allmonsters/')
+axios.get('http://localhost:3000/api/allMonsters/')
     .then((response) => {
         console.log(response.data)
     })
     .catch(error => {
         console.error("Fikk ikke kontakt med APIet: ", error)
     });
-
-axios.get('http://localhost:3000/api/deleteAllMonsters/')
-    .then((response) => {
-        console.log(response.data)
-        console.log('OK')
-})
-    .catch(error => {
-        console.error("Fikk ikke kontakt med APIet: ", error)
-});
-
 
 export default {
     name: 'MonstersView',
@@ -55,37 +45,37 @@ export default {
             axios
                 .get(url)
                 .then((response) => {
-                    this.monsterOutput = response.data
+                    this.monsterOutput = response.data;
                 })
                 .catch(error => {
-                    this.monsterOutput = 'Fant ikke monsteret du spurte etter, prøv igjen.'
-                } ) 
-         },
+                    this.monsterOutput = 'Fant ikke monsteret du spurte etter, prøv igjen.';
+               });
+        },
 
         // Dette får alle monstrene. Finn ut hvordan du tar hvert monster og lager det i databasen på SQL-serveren
 
         GetAllMonsters() {
             axios
-                .get('https://www.dnd5eapi.co/api/monsters/')
+                .get('http://localhost:3000/api/allMonsters/')
                 .then((response) => {
-                    this.allMonsterOutput = response.data
-                    console.log(response.data)
+                    this.allMonsterOutput = response.data;
+                    console.log(response.data);
                 })
                 .catch(error => {
-                    this.allMonsterOutput = 'Fant ikke monsteret du spurte etter, prøv igjen.'
-                }) 
-            },
-            
-            SearchMonster() {
-                
+                    this.allMonsterOutput = 'Fant ikke monsteret du spurte etter, prøv igjen.';
+                });
+        },
+
+        SearchMonster() {
+
             if (this.monsterInput) {
-                this.DisplayMonsters()
+                this.DisplayMonsters();
             } else {
                 this.monsterResult = 'Det skjedde en feil.';
             }
         },
     },
-}
+};
 
 </script>
   
