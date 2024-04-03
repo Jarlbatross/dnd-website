@@ -1,14 +1,19 @@
-// lag database som henter data fra DND-apiet. Bruk så databasen via backend til frontend. 
-
 <template>
-    <h1>{{monsterOutput.name}}</h1>
-    <div>
-        <button @click="GetAllMonsters">Vis monstre i DND-database via API</button>
-    </div>
-    <input type="text" id="monsterInput" placeholder="Skriv inn monsteret du vil se" v-model="monsterInput"/>
+    <h1 v-if="monsterOutput">{{monsterOutput.name}}</h1>
+    <h1 v-if="!monsterOutput">Monsterboken</h1>
+    
+    <input 
+        type="text"  
+        id="monsterInput"  
+        placeholder="Skriv inn monsteret du vil se..."
+        v-model="monsterInput"
+        class="p-3 mb-0.5 w-full border border-gray-300 rounded"
+
+    > 
+
     <button id="searchButton" @click="SearchMonster">Search</button>
     
-    <div v-if="monsterInput">
+    <div v-if="monsterOutput">
         <div id="monsterResult" class="monster-result">
             <p>Navn: {{ monsterOutput.name }}</p> 
             <p>Alignment: {{ monsterOutput.alignment }}</p>
@@ -21,14 +26,6 @@
 <script>
 import axios from 'axios'
 
-axios.get('http://localhost:3000/api/allMonsters/')
-    .then((response) => {
-        console.log(response.data)
-    })
-    .catch(error => {
-        console.error("Fikk ikke kontakt med APIet: ", error)
-    });
-
 export default {
     name: 'MonstersView',
     data() {
@@ -38,6 +35,17 @@ export default {
         };
     },
     methods: {
+        fetchMonstersfromDB() { 
+            axios
+            .get('http://localhost:3000/api/allMonsters')
+            .then((response) => {
+                this.monsterList = response.data;
+            })
+            .catch(error => {
+            this.monsterList = 'Det skjedde en feil';
+            });
+        },
+
         DisplayMonsters() {
             const index = this.monsterInput.toLowerCase();
             const url = `https://www.dnd5eapi.co/api/monsters/${index}`;
@@ -51,31 +59,20 @@ export default {
                     this.monsterOutput = 'Fant ikke monsteret du spurte etter, prøv igjen.';
                });
         },
-
-        // Dette får alle monstrene. Finn ut hvordan du tar hvert monster og lager det i databasen på SQL-serveren
-
-        GetAllMonsters() {
-            axios
-                .get('http://localhost:3000/api/allMonsters/')
-                .then((response) => {
-                    this.allMonsterOutput = response.data;
-                    console.log(response.data);
-                })
-                .catch(error => {
-                    this.allMonsterOutput = 'Fant ikke monsteret du spurte etter, prøv igjen.';
-                });
-        },
-
+        
         SearchMonster() {
-
             if (this.monsterInput) {
                 this.DisplayMonsters();
+                this.monsterInput = '';
+
             } else {
                 this.monsterResult = 'Det skjedde en feil.';
             }
         },
     },
-};
+    mounted() { 
+        this.fetchMonstersfromDB()
+    },
 
+};
 </script>
-  
