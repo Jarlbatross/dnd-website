@@ -7,9 +7,11 @@
         id="monsterInput"  
         placeholder="Skriv inn monsteret du vil se..."
         v-model="monsterInput"
-        class="p-3 mb-0.5 w-full border border-gray-300 rounded"
-
+        @input="filterMonsterNames"
     > 
+    <ul v-if="filteredMonsterNames.length" class="suggestions">
+      <li v-for="monster in filteredMonsterNames" :key="monster.name" @click="selectMonsterName(name)">{{ monster.name }}</li>
+    </ul>
 
     <button id="searchButton" @click="SearchMonster">Search</button>
     
@@ -31,7 +33,9 @@ export default {
     data() {
         return {
             monsterInput: '',
-            monsterOutput: ''
+            monsterOutput: '',
+            monsterList: [],
+            filteredMonsterNames: [],
         };
     },
     methods: {
@@ -45,34 +49,47 @@ export default {
             this.monsterList = 'Det skjedde en feil';
             });
         },
-
-        DisplayMonsters() {
-            const index = this.monsterInput.toLowerCase();
-            const url = `https://www.dnd5eapi.co/api/monsters/${index}`;
-
-            axios
-                .get(url)
-                .then((response) => {
-                    this.monsterOutput = response.data;
-                })
-                .catch(error => {
-                    this.monsterOutput = 'Fant ikke monsteret du spurte etter, prøv igjen.';
-               });
-        },
         
-        SearchMonster() {
-            if (this.monsterInput) {
-                this.DisplayMonsters();
-                this.monsterInput = '';
+        filterMonsterNames() {
+            const input = this.monsterInput.toLowerCase();
+            this.filteredMonsterNames = this.monsterList.filter(monster => monster.name.toLowerCase().startsWith(input))
+        },
 
-            } else {
-                this.monsterResult = 'Det skjedde en feil.';
-            }
+        selectMonsterName(name) {
+            this.monsterInput = name;
+            this.filteredMonsterNames = [];
         },
     },
     mounted() { 
         this.fetchMonstersfromDB()
     },
-
 };
+
+// midlertidig flyttet ut, prøve å bygge opp på nytt.
+// Målet er at inputfeltet har en autocomplete basert på foreløpig input.
+// Søket baserer seg så på monsternavn, sjekker DND - apiet og henter monsterdetaljer til monster der monster.navn i API = input.
+
+        // DisplayMonsters() {
+        //     const index = this.monsterInput.toLowerCase();
+        //     const url = `https://www.dnd5eapi.co/api/monsters/${index}`;
+
+        //     axios
+        //         .get(url)
+        //         .then((response) => {
+        //             this.monsterOutput = response.data;
+        //         })
+        //         .catch(error => {
+        //             this.monsterOutput = 'Fant ikke monsteret du spurte etter, prøv igjen.';
+        //        });
+        // },
+        
+        // SearchMonster() {
+        //     if (this.monsterInput) {
+        //         this.DisplayMonsters();
+        //         this.monsterInput = '';
+
+        //     } else {
+        //         this.monsterResult = 'Det skjedde en feil.';
+        //     }
+        // },
 </script>
