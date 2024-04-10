@@ -9,11 +9,23 @@
         v-model="monsterInput"
         @input="filterMonsterNames"
     > 
-    <ul v-if="filteredMonsterNames.length" class="suggestions">
-      <li v-for="monster in filteredMonsterNames" :key="monster.name" @click="selectMonsterName(name)">{{ monster.name }}</li>
+    <button id="searchButton" @click="SearchMonster">Search</button>
+
+    <ul v-if="filteredMonsterNames.length" class="Ul-suggestion">
+        <li class="suggestionListHeader">
+            Viser {{filteredMonsterNames.length}} av {{monsterList.length}} monstre.
+        </li>
+
+        <li 
+            v-for="monster in filteredMonsterNames" 
+            :key="monster.name" 
+            @click="selectMonsterName(name)"
+            class="suggestionListContent"
+        >
+            {{ monster.name }}
+        </li>
     </ul>
 
-    <button id="searchButton" @click="SearchMonster">Search</button>
     
     <div v-if="monsterOutput">
         <div id="monsterResult" class="monster-result">
@@ -65,7 +77,7 @@ export default {
     },
 };
 
-// midlertidig flyttet ut, prøve å bygge opp på nytt.
+// midlertidig flyttet ut, prøve å bygge opp på nytt. 
 // Målet er at inputfeltet har en autocomplete basert på foreløpig input.
 // Søket baserer seg så på monsternavn, sjekker DND - apiet og henter monsterdetaljer til monster der monster.navn i API = input.
 

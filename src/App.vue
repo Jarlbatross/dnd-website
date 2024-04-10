@@ -75,6 +75,34 @@ h1 {
   padding: 10px;
   border: 1px solid #ccc;
   border-radius: 4px;
-  text-align: left;
+  text-align: center;
+}
+
+.UL-suggestion {
+  width: 40%;
+  border-radius: 0.25rem;
+  background-color: white;
+  border: 1px solid gray;
+  justify-content: center;
+  padding: 0.5rem 1rem;
+  gap: 0.25rem;
+  position: absolute;
+  z-index: 10;
+}
+
+.suggestionListHeader {
+  padding-left: 0.25rem;
+  padding-right: 0.25rem;
+  padding-top: 0.25rem;
+  padding-bottom: 0.5rem;
+  font-weight: bold;
+  border-bottom: 1px solid #e5e7eb;
+}
+
+.suggestionListContent {
+  cursor: pointer;
+}
+.suggestionListContent:hover {
+    background-color: #f0f4f8;
 }
 </style>
